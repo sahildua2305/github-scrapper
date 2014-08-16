@@ -32,7 +32,7 @@ for i in repos_json:
     print "FORK COUNT : "+str(i['forks_count'])
     print "STARGAZERS COUNT : "+str(i['stargazers_count'])
     print "WATCHERS COUNT : "+str(i['watchers_count'])
-    print "OPEN ISSUES : "+str(i['open_issues'])
+    print "OPEN ISSUES : "+ str(i['open_issues'])
     print "LANGUAGE : "+str(i['language'])
     print
     print "*************************************************"
