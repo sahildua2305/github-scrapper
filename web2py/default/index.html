@@ -1,0 +1,340 @@
+{{import json}}
+<!DOCTYPE HTML>
+<!--
+	Escape Velocity by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Github Profile Scrapper</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="{{=URL('static','css/ie/html5shiv.js')}}"></script><![endif]-->
+		<script src="{{=URL('static','js/jquery.min.js')}}"></script>
+		<script src="{{=URL('static','js/jquery.dropotron.min.js')}}"></script>
+		<script src="{{=URL('static','js/skel.min.js')}}"></script>
+		<script src="{{=URL('static','js/skel-layers.min.js')}}"></script>
+		<script src="{{=URL('static','js/init.js')}}"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
+		
+			<link rel="stylesheet" href="{{=URL('static','css/skel.css')}}" />
+			<link rel="stylesheet" href="{{=URL('static','css/style.css')}}" />
+			<link rel="stylesheet" href="{{=URL('static','css/style-desktop.css')}}" />
+        <link rel="shortcut icon" href="http://sahildua.com/img/favicon.jpg">
+
+		<!--[if lte IE 8]><link rel="stylesheet" href="{{=URL('static','css/ie/v8.css')}}" /><![endif]-->
+        <style>
+            table,tr,td,th{border:1px solid #aaa;}
+            table{width:90%;margin:0 auto;}
+            table a{color:#fff;}
+            th{text-transform: uppercase;background:#e97770;}
+            td,th{padding:3px;}
+            .extra-stats{text-align:center;}
+            .extra-stats img{width:10%;height:10%;border-radius:50%;float:left;margin:6% 9%;}
+            input[type='text']:hover{background:#ddd;}
+            input[type='text']:active{background:#ddd;}
+            #piechart{padding:2%;margin:0 auto;}
+        </style>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	</head>
+	<body class="homepage" id="home">
+
+		<!-- Header -->
+			<div id="header-wrapper" class="wrapper">
+				<div id="header-wrapper" class="wrapper">
+				<div id="header">
+                    
+					<!-- Logo -->
+						<div id="logo">
+							<h1>Github Profile Scrapper</h1>
+							<br>
+							<form action="" method="POST">
+								<input type="text" name="username" id="username" placeholder="Enter github username" value="{{if request.vars.username!=None:}}{{=request.vars.username.strip()}}{{pass}}" style="width:35%;margin:0 auto;text-align:center;"/>
+								<input type="submit" name="submit" id="submit" value="Search" style="margin:10px;"/>
+							</form>
+						</div>
+                        <br><br>
+                        <script>
+                            console.log("sahil");
+                        </script>
+                        <div style="color:white;">
+                            {{if success=='true':}}
+                            {{try:}}
+                            {{user_details=json.loads(user_details)}}
+                            {{repos=json.loads(repos)}}
+                            {{lang_dict=dict()}}
+                            {{for repo in repos:}}
+                            {{lang=str(repo['language'])}}
+                            {{if lang not in lang_dict.keys():}}
+                            {{lang_dict[lang]=1}}
+                            {{else:}}
+                            {{lang_dict[lang]+=1}}
+                            {{pass}}
+                            {{pass}}
+                            <script type="text/javascript">
+                                var data_val = [];
+                                data_val.push(['Language', 'Total Repos in this language']);
+                            </script>
+                            {{for l in lang_dict.keys():}}
+                            <script>
+                                data_val.push(['{{=l}}',{{=lang_dict[l]}}]);
+                            </script>
+                            {{pass}}
+                            <script type="text/javascript">
+                                console.log(data_val);
+                              google.load("visualization", "1", {packages:["corechart"]});
+                              google.setOnLoadCallback(drawChart);
+                              function drawChart() {
+                                var data_values = [
+                                  ['Task', 'Hours per Day'],
+                                  ['Work',     11],
+                                  ['Eat',      2],
+                                  ['Commute',  2],
+                                  ['Watch TV', 2],
+                                  ['Sleep',    7]
+                                ];
+                                var data = google.visualization.arrayToDataTable(data_val);
+
+                                var options = {
+                                  title: 'Programming Languages Analysis'
+                                };
+
+                                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                                chart.draw(data, options);
+                              }
+                            </script>
+                            <div class="extra-stats">
+                                <img src="{{=user_details['avatar_url']}}"/>
+                                <div id="piechart" style="width: 600px; height: 300px;"></div>
+                            </div>
+                            <table border="1">
+                                <tr style="text-align:center;">
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Location</th>
+                                    <th>URL</th>
+                                    <th>Bio</th>
+                                    <th>Followers</th>
+                                    <th>Following</th>
+                                    <th>Public Repos</th>
+                                    <th>Public Gists</th>
+                                </tr>
+                                <tr style="text-align:center;">
+                                    <td><a href="{{=user_details['html_url']}}" target="_blank">{{=user_details['name']}}</a></td>
+                                    <td>{{=user_details['email']}}</td>
+                                    <td>{{=user_details['location']}}</td>
+                                    <td>{{=user_details['html_url']}}</td>
+                                    <td>{{=user_details['bio']}}</td>
+                                    <td>{{=user_details['followers']}}</td>
+                                    <td>{{=user_details['following']}}</td>
+                                    <td>{{=user_details['public_repos']}}</td>
+                                    <td>{{=user_details['public_gists']}}</td>
+                                </tr>
+                            </table>
+                            <h2 style="text-align:center;">
+                                Repositories
+                            </h2>
+                            
+                            <table border="1">
+                                <tr style="text-align:center;">
+                                    <th>Name</th>
+                                    <th>Forks</th></th>
+                                    <th>Stargazers</th>
+                                    <th>Watchers</th>
+                                    <th>Open Issues</th>
+                                    <th>Language</th>
+                                </tr>
+                            {{for repo in repos:}}
+                                <tr style="text-align:center;">
+                                    <td><a href="{{=repo['html_url']}}" target="_blank">{{=repo['name']}}</a></td>
+                                    <td>{{=repo['forks_count']}}</td>
+                                    <td>{{=repo['stargazers_count']}}</td>
+                                    <td>{{=repo['watchers_count']}}</td>
+                                    <td>{{=repo['open_issues']}}</td>
+                                    <td>{{=repo['language']}}</td>
+                                </tr>
+                            {{pass}}
+                            </table>
+                            {{except:}}
+                            </table>
+                            <h1 style="text-align:center;color:white;">
+                                Something went wrong. Send me a mail at sahildua2305@gmail.com. I will look into it.
+                            </h1>
+                            {{pass}}
+                            {{else:}}
+                             <h2 style="text-align:center;color:white;">
+                                {{=message}}
+                             </h2>    
+                            {{pass}}
+                {{mail.send('sahildua2305@gmail.com', 'test', 'test mail from github_scrapper')}}
+                        </div>
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="https://sahildua.pythonanywhere.com/github_scrapper/">Home</a></li>
+								<li><a href="#intro-wrapper">Introduction</a></li>
+								<li><a href="#projects">Projects</a></li>
+								<li><a href="#footer-wrapper">Feedback</a></li>
+							</ul>
+						</nav>
+
+				</div>
+			</div>
+			</div>
+		
+		<!-- Intro -->
+			<div id="intro-wrapper" class="wrapper style1">
+				<div class="title">What's this all about?</div>
+				<section id="intro" class="container">
+					<p class="style1">So in case you were wondering what this is all about ...</p>
+					<p class="style2">
+						Github Profile Scrapper is an application built using Github v3 REST API to scrap profiles.
+					</p>
+					
+				</section>
+			</div>
+		
+		
+		<!-- Highlights -->
+			<div class="wrapper style3" id="projects">
+				<div class="title">Other Famous Projects</div>
+				<div id="highlights" class="container">
+					<div class="row oneandhalf">
+						<div class="4u">
+							<section class="highlight">
+								<ul class="actions">
+									<li><a href="http://sahildua.com/projects/myspeed/" class="button style1">Try it!</a></li>
+								</ul>
+								<a href="http://sahildua.com/projects/myspeed/" class="image featured"><img src="http://sahildua.com/img/myspeedbeta.JPG" alt="" /></a>
+								<h3><a href="http://sahildua.com/projects/myspeed/">MySpeed Application</a></h3>
+								<p>MySpeed application enables users to compete with others based on their internet connection speed at any moment. It was developed using REST API provided by speedof.me.</p>
+								
+							</section>
+						</div>
+						<div class="4u">
+							<section class="highlight">
+								<ul class="actions">
+									<li><a href="http://sahildua.com/projects/tweetogram/" class="button style1">Try it!</a></li>
+								</ul>
+								<a href="http://sahildua.com/projects/tweetogram/" class="image featured"><img src="http://sahildua.com/img/tweetogram.jpg" alt="" /></a>
+								<h3><a href="http://sahildua.com/projects/tweetogram/">Tweetogram</a></h3>
+								<p>A Twitter API demonstration application with all possible actions permitted with the use of Twitter API. View profile, hashtag search and tweet are some of the nice features. Try it out now!</p>
+								
+							</section>
+						</div>
+						<div class="4u">
+							<section class="highlight">
+								<ul class="actions">
+									<li><a href="http://viewport.sahildua.com/" class="button style1">Try it!</a></li>
+								</ul>
+								<a href="http://viewport.sahildua.com/" class="image featured"><img src="http://sahildua.com/img/viewport.jpg" alt="" /></a>
+								<h3><a href="http://viewport.sahildua.com/">Web Viewport</a></h3>
+								<p>A viewport to check responsiveness of a website and decide the breakpoints while developing a responsive website.</p>
+								
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		<!-- Footer -->
+			<div id="footer-wrapper" class="wrapper">
+				<div class="title">Have suggestions?</div>
+				<div id="footer" class="container">
+					<header class="style1">
+						<h2>Do you have suggestions/feedback about this app?</h2>
+						<p>
+							Feel free to contact me.
+						</p>
+					</header>
+					<hr />
+					<div class="row oneandhalf">
+						<div class="6u">
+
+							<!-- Contact Form -->
+								<section>
+									<form method="post" action="#">
+										<div class="row half">
+											<div class="6u">
+												<input type="text" name="name" id="contact-name" placeholder="Name" />
+											</div>
+											<div class="6u">
+												<input type="text" name="email" id="contact-email" placeholder="Email" />
+											</div>
+										</div>
+										<div class="row half">
+											<div class="12u">
+												<textarea name="message" id="contact-message" placeholder="Message" rows="4"></textarea>
+											</div>
+										</div>
+										<div class="row">
+											<div class="12u">
+												<ul class="actions">
+													<li><input type="submit" class="style1" value="Send" /></li>
+													<li><input type="reset" class="style2" value="Reset" /></li>
+												</ul>
+											</div>
+										</div>
+									</form>
+								</section>
+
+						</div>
+						<div class="6u">
+						
+							<!-- Contact -->
+								<section class="feature-list small">
+									<div class="row">
+										<div class="6u">
+											<section>
+												<h3 class="icon fa-comment">Social</h3>
+												<p>
+													<a href="https://www.twitter.com/sahildua2305">@sahildua2305</a><br />
+													<a href="https://www.linkedin.com/in/sahildua2305">linkedin.com/in/sahildua2305</a><br />
+													<a href="https://www.facebook.com/iamsahildua">facebook.com/iamsahildua</a>
+												</p>
+											</section>
+										</div>
+										<div class="6u">
+											<section>
+												<h3 class="icon fa-envelope">Email</h3>
+												<p>
+													<a href="#">sahildua2305@gmail.com</a>
+												</p>
+											</section>
+										</div>
+									</div>
+								</section>
+								
+						</div>
+					</div>
+					<hr />
+				</div>
+				<div id="copyright">
+					<ul>
+						<li>&copy; <a href="http://sahildua.com">Sahil Dua</a> & Nitika Agarwal</li><li>Design: HTML5 UP</li>
+					</ul>
+				</div>
+			</div>
+    <!-- Start of StatCounter Code for Default Guide -->
+	<script type="text/javascript">
+	var sc_project=9940142; 
+	var sc_invisible=1; 
+	var sc_security="b0991b09"; 
+	var scJsHost = (("https:" == document.location.protocol) ?
+	"https://secure." : "http://www.");
+	document.write("<sc"+"ript type='text/javascript' src='" +
+	scJsHost+
+	"statcounter.com/counter/counter.js'></"+"script>");
+	</script>
+	<noscript><div class="statcounter"><a title="site stats"
+	href="http://statcounter.com/" target="_blank"><img
+	class="statcounter"
+	src="http://c.statcounter.com/9940142/0/b0991b09/1/"
+	alt="site stats"></a></div></noscript>
+	<!-- End of StatCounter Code for Default Guide -->
+
+	</body>
+</html>
