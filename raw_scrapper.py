@@ -28,7 +28,7 @@ def print_repo_details(repo):
     print "*************************************************"
 
 login_params = {'username': 'sahildua2305',
-                'password': 'sahildua987@'}
+                'password': ''}
 #response = requests.get('https://api.github.com/', params=login_params)
 
 username = raw_input()
